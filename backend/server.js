@@ -2,31 +2,23 @@ require('dotenv').config();
 const express = require('express');
 const { MongoClient, ObjectId } = require('mongodb');
 const path = require('path');
-const cors = require('cors'); // Needed to allow frontend to talk to backend
+const cors = require('cors'); 
 
 const app = express();
 
 // --- CONFIGURATION ---
-// You will get this connection string from MongoDB Atlas
 const uri = process.env.MONGO_URI; 
 const port = process.env.PORT || 3000;
 
 // --- MIDDLEWARE ---
-
-// 1. Logger Middleware (Requirement: 4%)
 app.use((req, res, next) => {
+    // Logger
     console.log(`[${new Date().toISOString()}] ${req.method} request to ${req.url}`);
     next();
 });
 
-// 2. CORS (Allows your GitHub Pages frontend to talk to this server)
 app.use(cors());
-
-// 3. JSON Parsing
 app.use(express.json());
-
-// 4. Static File Middleware (Requirement: 4%)
-// This serves images from a folder named 'images' in your backend directory
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 
@@ -34,7 +26,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 let db;
 MongoClient.connect(uri)
     .then(client => {
-        db = client.db('hubsy'); // Your database name
+        db = client.db('hubsy'); 
         console.log('Connected to MongoDB');
     })
     .catch(err => console.error(err));
@@ -42,7 +34,7 @@ MongoClient.connect(uri)
 
 // --- ROUTES ---
 
-// 1. GET All Lessons (Requirement: 3%)
+// 1. GET All Lessons
 app.get('/api/lessons', async (req, res) => {
     try {
         const lessons = await db.collection('lessons').find({}).toArray();
@@ -52,7 +44,23 @@ app.get('/api/lessons', async (req, res) => {
     }
 });
 
-// 2. POST New Order (Requirement: 4%)
+// 2. SEARCH Route
+app.get('/api/search', async (req, res) => {
+    try {
+        const query = req.query.q; 
+        const results = await db.collection('lessons').find({
+            $or: [
+                { title: { $regex: query, $options: 'i' } },
+                { location: { $regex: query, $options: 'i' } }
+            ]
+        }).toArray();
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// 3. POST New Order
 app.post('/api/orders', async (req, res) => {
     try {
         const order = req.body;
@@ -63,37 +71,43 @@ app.post('/api/orders', async (req, res) => {
     }
 });
 
-// 3. PUT Update Spaces (Requirement: 5%)
+// 4. PUT Update Spaces (THE FIX IS HERE)
 app.put('/api/lessons/:id', async (req, res) => {
     try {
-        const id = new ObjectId(req.params.id);
-        const { spaces } = req.body; // Expecting { spaces: 4 }
+        const { spaces } = req.body;
+        const rawId = req.params.id;
+
+        // Debug Log: See exactly what the server receives
+        console.log(`Attempting to update lesson ${rawId} to ${spaces} spaces...`);
+
+        let result;
         
-        const result = await db.collection('lessons').updateOne(
-            { _id: id },
-            { $set: { spaces: spaces } }
-        );
-        
+        // Strategy A: Try with ObjectId (Standard MongoDB)
+        try {
+            const objectId = new ObjectId(rawId);
+            result = await db.collection('lessons').updateOne(
+                { _id: objectId },
+                { $set: { spaces: parseInt(spaces) } } // Ensure number
+            );
+        } catch (e) {
+            // Convert failed (ID is likely a string), ignore and try Strategy B
+            result = { matchedCount: 0 };
+        }
+
+        // Strategy B: Try with String ID (Imported Data)
+        if (result.matchedCount === 0) {
+            console.log(`ObjectId failed. Trying String ID for ${rawId}...`);
+            result = await db.collection('lessons').updateOne(
+                { _id: rawId }, // Search as plain string
+                { $set: { spaces: parseInt(spaces) } }
+            );
+        }
+
+        console.log(`Update Result: Matched ${result.matchedCount}, Modified ${result.modifiedCount}`);
+
         res.json({ message: 'Spaces updated', result });
     } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
-// 4. SEARCH Route (Requirement: 7% for Backend Search)
-// Currently your index.html filters locally. To get full marks, 
-// you should call this endpoint from Vue when typing.
-app.get('/api/search', async (req, res) => {
-    try {
-        const query = req.query.q; // e.g., ?q=math
-        const results = await db.collection('lessons').find({
-            $or: [
-                { title: { $regex: query, $options: 'i' } },
-                { location: { $regex: query, $options: 'i' } }
-            ]
-        }).toArray();
-        res.json(results);
-    } catch (err) {
+        console.error("PUT Error:", err);
         res.status(500).json({ message: err.message });
     }
 });

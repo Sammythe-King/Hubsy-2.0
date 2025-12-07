@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hubsy - Partial Vue App</title>
-    <!-- 1. Load Vue.js from CDN -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* GLOBAL STYLES */
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -57,7 +57,6 @@
 <body>
 
 <div id="app">
-    <!-- HEADER -->
     <header class="header">
         <a href="#" class="logo" @click.prevent="currentView = 'lessons'">Hubsy</a>
         <nav>
@@ -70,11 +69,15 @@
         </nav>
     </header>
 
-    <!-- LESSONS VIEW -->
     <div v-if="currentView === 'lessons'" class="container">
-        <!-- Search & Sort -->
         <div class="search-bar">
-            <input v-model="searchQuery" class="search-input" placeholder="Search lessons...">
+            <input 
+                v-model="searchQuery" 
+                @input="performSearch" 
+                class="search-input" 
+                placeholder="Search lessons..."
+            >
+            
             <select v-model="sortAttribute" class="sort-select">
                 <option value="title">Sort by Subject</option>
                 <option value="location">Sort by Location</option>
@@ -86,23 +89,23 @@
             </button>
         </div>
 
-        <!-- List -->
         <div v-if="loading" class="state-msg">Loading lessons...</div>
         <div v-else class="lessons-grid">
-            <div v-for="lesson in filteredLessons" :key="lesson._id" class="lesson-card">
+            <div v-for="lesson in sortedLessons" :key="lesson._id" class="lesson-card">
                 <img :src="getImageUrl(lesson.image)" class="lesson-image" alt="Lesson Image">
                 <div class="card-body">
                     <h3 class="lesson-title">{{ lesson.title }}</h3>
                     <p>📍 {{ lesson.location }}</p>
                     <div class="lesson-info">
                         <span>💰 ${{ lesson.price }}</span>
+                        
                         <span>🎟 {{ lesson.spaces }} spaces left</span>
+                        
                     </div>
-                    <!-- Add to Cart Button -->
                     <button 
                         class="btn btn-add" 
                         @click="addToCart(lesson)"
-                        :disabled="lesson.spaces <= 0 || isInCart(lesson)"
+                        :disabled="lesson.spaces <= 0"
                     >
                         {{ getButtonText(lesson) }}
                     </button>
@@ -111,7 +114,6 @@
         </div>
     </div>
 
-    <!-- CART VIEW -->
     <div v-if="currentView === 'cart'" class="container">
         <h2>Shopping Cart</h2>
         
@@ -121,17 +123,15 @@
         </div>
 
         <div v-else>
-            <!-- Cart Items -->
-            <div v-for="item in cart" :key="item._id" class="cart-item">
+            <div v-for="(item, index) in cart" :key="index" class="cart-item">
                 <img :src="getImageUrl(item.image)" class="cart-img">
                 <div class="cart-details">
                     <h3>{{ item.title }}</h3>
                     <p>${{ item.price }}</p>
                 </div>
-                <button class="btn btn-remove" @click="removeFromCart(item)">Remove</button>
+                <button class="btn btn-remove" @click="removeFromCart(index, item)">Remove</button>
             </div>
 
-            <!-- Checkout Form -->
             <div class="checkout-box">
                 <h3>Checkout</h3>
                 <div class="form-group">
@@ -165,7 +165,7 @@
             // --- STATE ---
             const lessons = ref([]);
             const cart = ref([]);
-            const currentView = ref('lessons'); // 'lessons' or 'cart'
+            const currentView = ref('lessons'); 
             
             // Search & Sort
             const searchQuery = ref('');
@@ -179,12 +179,12 @@
             const checkout = ref({ name: '', phone: '' });
             const orderStatus = ref('');
 
-            // --- API URL (RENDER) ---
-            const API_URL = "https://hubsy-2-0.onrender.com";
+            // --- CONFIGURATION ---
+            // ⚠️ MAKE SURE THIS IS YOUR RENDER URL (NO TYPOS)
+            const API_URL = "https://hubsy-2-0.onrender.com"; 
 
             // --- METHODS ---
             
-            // 1. Fetch Lessons
             const fetchLessons = async () => {
                 try {
                     const res = await fetch(`${API_URL}/api/lessons`);
@@ -196,79 +196,70 @@
                 }
             };
 
-            // 2. Image Helper
+            const performSearch = async () => {
+                if (!searchQuery.value) return fetchLessons();
+                try {
+                    const res = await fetch(`${API_URL}/api/search?q=${searchQuery.value}`);
+                    lessons.value = await res.json();
+                } catch (err) {
+                    console.error("Search error:", err);
+                }
+            };
+
             const getImageUrl = (img) => {
                 if (!img) return 'https://placehold.co/600x400';
                 return `${API_URL}/images/${img}`;
             };
 
-            // 3. Cart Logic
+            // 1. ADD TO CART (REDUCES UI INSTANTLY)
             const addToCart = (lesson) => {
                 if (lesson.spaces > 0) {
+                    // Push to cart
                     cart.value.push(lesson);
-                    // Optimistic UI update: subtract space locally
-                    // lesson.spaces--; 
+                    // ⬇️ THIS LINE INSTANTLY UPDATES THE UI NUMBER ⬇️
+                    lesson.spaces--; 
                 }
             };
 
-            const removeFromCart = (itemToRemove) => {
-                cart.value = cart.value.filter(item => item._id !== itemToRemove._id);
-                // Return space locally if you want
-                // const lesson = lessons.value.find(l => l._id === itemToRemove._id);
-                // if (lesson) lesson.spaces++;
-            };
-
-            const isInCart = (lesson) => {
-                return cart.value.some(item => item._id === lesson._id);
+            // 2. REMOVE FROM CART (ADDS BACK TO UI INSTANTLY)
+            const removeFromCart = (index, itemToRemove) => {
+                cart.value.splice(index, 1);
+                
+                // Find the original lesson in the list and give the space back
+                const lesson = lessons.value.find(l => l._id === itemToRemove._id);
+                if (lesson) {
+                    // ⬇️ THIS LINE RESTORES THE NUMBER ⬇️
+                    lesson.spaces++;
+                }
             };
 
             const getButtonText = (lesson) => {
                 if (lesson.spaces <= 0) return 'Sold Out';
-                if (isInCart(lesson)) return 'In Cart';
                 return 'Add to Cart';
             };
 
-            // 4. Computed Filter/Sort
-            const filteredLessons = computed(() => {
-                let temp = lessons.value;
-
-                // Search
-                if (searchQuery.value) {
-                    const q = searchQuery.value.toLowerCase();
-                    temp = temp.filter(l => 
-                        l.title.toLowerCase().includes(q) || 
-                        l.location.toLowerCase().includes(q)
-                    );
-                }
-
-                // Sort
-                temp = temp.sort((a, b) => {
+            const sortedLessons = computed(() => {
+                let temp = [...lessons.value]; 
+                return temp.sort((a, b) => {
                     let valA = a[sortAttribute.value];
                     let valB = b[sortAttribute.value];
-                    
-                    if (typeof valA === 'string') {
-                        valA = valA.toLowerCase();
-                        valB = valB.toLowerCase();
-                    }
-
+                    if (typeof valA === 'string') valA = valA.toLowerCase();
+                    if (typeof valB === 'string') valB = valB.toLowerCase();
                     if (valA < valB) return sortOrder.value === 'asc' ? -1 : 1;
                     if (valA > valB) return sortOrder.value === 'asc' ? 1 : -1;
                     return 0;
                 });
-
-                return temp;
             });
 
             const toggleSortOrder = () => {
                 sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc';
             };
 
-            // 5. Checkout Validation
             const isNameValid = computed(() => /^[a-zA-Z\s]+$/.test(checkout.value.name));
             const isPhoneValid = computed(() => /^[0-9]+$/.test(checkout.value.phone));
-            const isFormValid = computed(() => isNameValid.value && isPhoneValid.value);
+            const isFormValid = computed(() => isNameValid.value && isPhoneValid.value && cart.value.length > 0);
 
-            // 6. Submit Order
+            // 3. CHECKOUT (UPDATES BACKEND WITH NEW NUMBERS)
             const submitOrder = async () => {
                 orderStatus.value = "Processing...";
                 
@@ -277,11 +268,10 @@
                     phone: checkout.value.phone,
                     lessonIds: cart.value.map(i => i._id),
                     spacesBooked: cart.value.length,
-                    total: cart.value.reduce((sum, i) => sum + i.price, 0)
                 };
 
                 try {
-                    // POST Order
+                    // Step A: Save Order
                     const res = await fetch(`${API_URL}/api/orders`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -289,13 +279,23 @@
                     });
 
                     if (res.ok) {
-                        // PUT Update Spaces for each item
+                        // Step B: Update Spaces in Database
+                        // We group items so we don't send duplicate updates for the same lesson
+                        const updates = {};
                         for (const item of cart.value) {
-                             const newSpaces = item.spaces - 1;
-                             await fetch(`${API_URL}/api/lessons/${item._id}`, {
+                            // 'item' here refers to the lesson object which ALREADY has reduced spaces
+                            // because we did lesson.spaces-- in addToCart
+                            updates[item._id] = item; 
+                        }
+
+                        // Send one update per unique lesson
+                        for (const id in updates) {
+                             const item = updates[id];
+                             // We send 'item.spaces' which is the NEW, REDUCED number
+                             await fetch(`${API_URL}/api/lessons/${id}`, {
                                 method: 'PUT',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ spaces: newSpaces })
+                                body: JSON.stringify({ spaces: item.spaces }) 
                              });
                         }
 
@@ -304,9 +304,11 @@
                         checkout.value = { name: '', phone: '' };
                         orderStatus.value = '';
                         currentView.value = 'lessons';
-                        fetchLessons(); // Refresh data to see new spaces
+                        
+                        // Final Sync: Fetch from backend to ensure everything is perfect
+                        fetchLessons(); 
                     } else {
-                        orderStatus.value = "Failed. Try again.";
+                        orderStatus.value = "Failed.";
                     }
                 } catch (e) {
                     console.error(e);
@@ -314,7 +316,6 @@
                 }
             };
 
-            // Lifecycle
             onMounted(() => {
                 fetchLessons();
             });
@@ -322,8 +323,8 @@
             return {
                 currentView, lessons, cart, loading,
                 searchQuery, sortAttribute, sortOrder,
-                filteredLessons, toggleSortOrder,
-                getImageUrl, addToCart, removeFromCart, isInCart, getButtonText,
+                sortedLessons, toggleSortOrder, performSearch,
+                getImageUrl, addToCart, removeFromCart, getButtonText,
                 checkout, isNameValid, isPhoneValid, isFormValid, submitOrder, orderStatus
             };
         }

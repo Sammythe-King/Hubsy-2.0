@@ -32,7 +32,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // --- MONGODB CONNECTION ---
 let db;
-MongoClient.connect(uri, { useUnifiedTopology: true })
+MongoClient.connect(uri)
     .then(client => {
         db = client.db('hubsy'); // Your database name
         console.log('Connected to MongoDB');

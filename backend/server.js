@@ -7,7 +7,7 @@ const app = express();
 
 // --- CONFIGURATION ---
 // You will get this connection string from MongoDB Atlas
-const uri = "mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/"; 
+const uri = process.env.MONGO_URI; 
 const port = process.env.PORT || 3000;
 
 // --- MIDDLEWARE ---

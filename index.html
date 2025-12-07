@@ -197,7 +197,8 @@
             
             const fetchLessons = async () => {
                 try {
-                    const res = await fetch(`${API_URL}/api/lessons`);
+                    // ⚠️ FIX: Added 'cache: no-store' to stop browser from loading old data
+                    const res = await fetch(`${API_URL}/api/lessons`, { cache: 'no-store' });
                     lessons.value = await res.json();
                 } catch (err) {
                     console.error("Fetch error:", err);
@@ -297,6 +298,10 @@
                         // Send one update per unique lesson
                         for (const id in updates) {
                              const item = updates[id];
+                             
+                             // Debug Log: Check console to see exactly what is sending
+                             console.log(`Sending update for ${item.title}: spaces = ${item.spaces}`);
+
                              // Send the new calculated space to the server
                              const updateRes = await fetch(`${API_URL}/api/lessons/${id}`, {
                                 method: 'PUT',

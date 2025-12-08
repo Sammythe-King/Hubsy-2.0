@@ -59,7 +59,9 @@
 <div id="app">
     <!-- HEADER -->
     <header class="header">
-        <a href="#" class="logo" @click.prevent="currentView = 'lessons'">Hubsy</a>
+        <a href="#" class="logo" @click.prevent="currentView = 'lessons'">
+            <img :src="getImageUrl('hubsy.png')" alt="Hubsy Logo" class="logo-img">
+        </a>
         <nav>
             <button class="nav-btn" :class="{active: currentView === 'lessons'}" @click="currentView = 'lessons'">
                 Lessons

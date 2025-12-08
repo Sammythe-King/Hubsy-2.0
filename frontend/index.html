@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hubsy - Lessons & Cart</title>
-    <!-- 1. Load Vue.js from CDN (Partial Vue Requirement) -->
+    <!-- 1. Load Vue.js from CDN -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,18 +14,30 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.6; }
         
-        /* HEADER */
+        /* HEADER - FIXED LAYOUT */
         .header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 1rem 2rem; background-color: #fff; border-bottom: 1px solid #e0e0e0; 
-            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background-color: #fff; 
+            border-bottom: 1px solid #e0e0e0; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Inner container to center content and prevent "scattered" look */
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
         }
         
-        /* Updated Logo Style */
-        .logo { text-decoration: none; display: flex; align-items: center; }
+        .logo { text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
         .logo-img { height: 40px; width: auto; object-fit: contain; }
 
-        .nav-links { display: flex; gap: 1rem; }
+        .nav-links { display: flex; gap: 1rem; align-items: center; }
         .nav-btn { 
             padding: 0.5rem 1rem; background: none; border: none; font-size: 1rem; 
             cursor: pointer; color: #555; transition: color 0.2s; font-weight: 500;
@@ -47,16 +59,39 @@
 
         /* --- LESSONS VIEW --- */
         .toolbar { 
-            display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; 
-            background: #fff; padding: 1.5rem; border-radius: 12px; border: 1px solid #eee;
+            display: flex; 
+            gap: 1rem; 
+            margin-bottom: 2rem; 
+            flex-wrap: wrap; 
+            background: #fff; 
+            padding: 1rem; 
+            border-radius: 12px; 
+            border: 1px solid #eee;
+            align-items: center;
         }
-        .search-input { flex: 1; padding: 0.8rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
-        .sort-select { padding: 0.8rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; cursor: pointer; }
+        .search-input { 
+            flex: 2; 
+            min-width: 200px;
+            padding: 0.8rem; 
+            border: 1px solid #ccc; 
+            border-radius: 6px; 
+            font-size: 1rem; 
+        }
+        .sort-select { 
+            flex: 1;
+            min-width: 150px;
+            padding: 0.8rem; 
+            border: 1px solid #ccc; 
+            border-radius: 6px; 
+            font-size: 1rem; 
+            cursor: pointer; 
+        }
         .sort-btn { 
-            padding: 0.8rem 1.2rem; background: #fff; border: 1px solid #ccc; 
+            padding: 0.8rem 1.2rem; background: #f8f9fa; border: 1px solid #ccc; 
             border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;
+            white-space: nowrap;
         }
-        .sort-btn:hover { background-color: #f9f9f9; }
+        .sort-btn:hover { background-color: #e9ecef; }
 
         .lessons-grid { 
             display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; 
@@ -65,13 +100,14 @@
             background: white; border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; 
             transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
         }
-        .lesson-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .lesson-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.08); }
         
-        .card-img-wrapper { position: relative; height: 200px; background-color: #eee; }
+        .card-img-wrapper { position: relative; height: 200px; background-color: #f4f4f4; }
         .lesson-img { width: 100%; height: 100%; object-fit: cover; }
         .badge { 
-            position: absolute; top: 10px; right: 10px; padding: 5px 10px; 
-            border-radius: 20px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;
+            position: absolute; top: 10px; right: 10px; padding: 5px 12px; 
+            border-radius: 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .badge-available { background: #2ecc71; color: white; }
         .badge-full { background: #e74c3c; color: white; }
@@ -79,7 +115,8 @@
         .card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 0.8rem; }
         .card-title { font-size: 1.25rem; font-weight: 700; margin: 0; color: #0e0a07; }
         .card-meta { display: flex; flex-direction: column; gap: 0.5rem; color: #666; font-size: 0.9rem; }
-        .meta-row { display: flex; align-items: center; gap: 0.5rem; }
+        .meta-row { display: flex; align-items: center; gap: 0.6rem; }
+        .meta-row i { color: #f0c419; width: 16px; text-align: center; }
         
         .btn-add { 
             margin-top: auto; padding: 0.8rem; border: none; border-radius: 6px; 
@@ -98,12 +135,12 @@
         .cart-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; background: #eee; }
         .item-info { flex: 1; }
         .item-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.2rem; }
-        .item-price { color: #666; font-size: 0.9rem; }
+        .item-price { color: #666; font-size: 0.9rem; font-weight: 500;}
         .btn-remove { 
-            color: #e74c3c; background: none; border: none; cursor: pointer; 
-            font-size: 1.2rem; padding: 0.5rem; transition: color 0.2s; 
+            color: #999; background: none; border: none; cursor: pointer; 
+            font-size: 1.1rem; padding: 0.5rem; transition: color 0.2s; 
         }
-        .btn-remove:hover { color: #c0392b; }
+        .btn-remove:hover { color: #e74c3c; }
 
         .checkout-card { 
             background: white; padding: 2rem; border-radius: 12px; border: 1px solid #eee; 
@@ -139,30 +176,31 @@
 <body>
 
 <div id="app">
-    <!-- HEADER -->
+    <!-- HEADER WRAPPER -->
     <header class="header">
-        <a href="#" class="logo" @click.prevent="currentView = 'lessons'">
-            <!-- FIX: Loading Logo from Render Backend with fallback -->
-            <img 
-                :src="`${API_URL}/images/hubsy.png`" 
-                @error="$event.target.style.display='none'; $event.target.nextElementSibling.style.display='block'"
-                alt="Hubsy Logo" 
-                class="logo-img"
-            >
-            <!-- Fallback Text Logo if Image Fails -->
-            <span style="display:none; font-size: 24px; font-weight: 800; color: #0e0a07;">
-                <i class="fa-solid fa-graduation-cap" style="color: #f0c419;"></i> Hubsy
-            </span>
-        </a>
-        <nav class="nav-links">
-            <button class="nav-btn" :class="{active: currentView === 'lessons'}" @click="currentView = 'lessons'">
-                Lessons
-            </button>
-            <button class="nav-btn cart-btn" :class="{active: currentView === 'cart'}" @click="currentView = 'cart'">
-                <i class="fa-solid fa-cart-shopping"></i> Cart 
-                <span class="cart-count" v-if="cart.length > 0">{{ cart.length }}</span>
-            </button>
-        </nav>
+        <!-- HEADER INNER CONTENT (CENTERED) -->
+        <div class="header-inner">
+            <a href="#" class="logo" @click.prevent="currentView = 'lessons'">
+                <img 
+                    :src="`${API_URL}/images/hubsy.png`" 
+                    @error="$event.target.style.display='none'; $event.target.nextElementSibling.style.display='block'"
+                    alt="Hubsy Logo" 
+                    class="logo-img"
+                >
+                <span style="display:none; font-size: 24px; font-weight: 800; color: #0e0a07;">
+                    <i class="fa-solid fa-graduation-cap" style="color: #f0c419;"></i> Hubsy
+                </span>
+            </a>
+            <nav class="nav-links">
+                <button class="nav-btn" :class="{active: currentView === 'lessons'}" @click="currentView = 'lessons'">
+                    Lessons
+                </button>
+                <button class="nav-btn cart-btn" :class="{active: currentView === 'cart'}" @click="currentView = 'cart'">
+                    <i class="fa-solid fa-cart-shopping"></i> Cart 
+                    <span class="cart-count" v-if="cart.length > 0">{{ cart.length }}</span>
+                </button>
+            </nav>
+        </div>
     </header>
 
     <!-- === VIEW: LESSONS === -->
@@ -317,7 +355,6 @@
             const orderMessage = ref('');
 
             // --- CONFIGURATION ---
-            // Using your LIVE Render backend
             const API_URL = "https://hubsy.onrender.com"; 
 
             // --- HELPER METHODS ---
@@ -338,7 +375,6 @@
             };
 
             // Get image URL or placeholder
-            // Updated to handle both lesson images and the logo
             const getImageUrl = (img) => {
                 if (!img) return 'https://placehold.co/600x400?text=No+Image';
                 return `${API_URL}/images/${img}`;
@@ -366,8 +402,6 @@
 
             const isInCart = (lesson) => {
                 // Check if this specific lesson ID exists in the cart array
-                // Note: For multi-add logic, you might remove this check. 
-                // But for this project, usually adding once is cleaner.
                 return cart.value.some(item => item._id === lesson._id);
             };
 
@@ -450,8 +484,6 @@
                         // 2. PUT Update Spaces for EACH item
                         for (const item of cart.value) {
                              // We calculate new spaces based on our local decremented value
-                             // But it's safer to fetch fresh, then subtract. 
-                             // For simplicity here, we send the updated space count.
                              const lessonRef = lessons.value.find(l => l._id === item._id);
                              if (lessonRef) {
                                  await fetch(`${API_URL}/api/lessons/${item._id}`, {

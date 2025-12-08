@@ -3,211 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hubsy - Lessons & Cart</title>
-    <!-- 1. Load Vue.js from CDN -->
+    <title>Hubsy - Partial Vue App</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        /* --- GLOBAL STYLES --- */
+        
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.6; }
+        body { font-family: system-ui, -apple-system, sans-serif; background-color: #fefefe; color: #333; }
         
-        /* HEADER - FIXED LAYOUT */
-        .header { 
-            background-color: #fff; 
-            border-bottom: 1px solid #e0e0e0; 
-            position: sticky; 
-            top: 0; 
-            z-index: 100; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        /* Inner container to center content and prevent "scattered" look */
-        .header-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
         
-        .logo { text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
-        .logo-img { height: 40px; width: auto; object-fit: contain; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background-color: #fff; border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 24px; font-weight: 800; color: #0e0a07; text-decoration: none; }
+        .nav-btn { padding: 10px 20px; background: none; border: none; font-size: 16px; cursor: pointer; color: #555; }
+        .nav-btn.active { font-weight: bold; color: #0e0a07; }
+        .cart-btn { position: relative; background-color: #f0c419; color: #0e0a07; font-weight: bold; border-radius: 8px; }
+        .cart-count { background: #c0392b; color: white; padding: 2px 6px; border-radius: 50%; font-size: 12px; margin-left: 5px; }
 
-        .nav-links { display: flex; gap: 1rem; align-items: center; }
-        .nav-btn { 
-            padding: 0.5rem 1rem; background: none; border: none; font-size: 1rem; 
-            cursor: pointer; color: #555; transition: color 0.2s; font-weight: 500;
-        }
-        .nav-btn:hover, .nav-btn.active { color: #0e0a07; font-weight: 700; }
         
-        .cart-btn { 
-            background-color: #0e0a07; color: white !important; border-radius: 8px; 
-            display: flex; align-items: center; gap: 0.5rem; transition: background 0.2s;
-        }
-        .cart-btn:hover { background-color: #333; }
-        .cart-count { 
-            background: #f0c419; color: #0e0a07; padding: 2px 6px; 
-            border-radius: 50%; font-size: 0.75rem; font-weight: bold; 
-        }
-
-        /* CONTAINER */
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
-
-        /* --- LESSONS VIEW --- */
-        .toolbar { 
-            display: flex; 
-            gap: 1rem; 
-            margin-bottom: 2rem; 
-            flex-wrap: wrap; 
-            background: #fff; 
-            padding: 1rem; 
-            border-radius: 12px; 
-            border: 1px solid #eee;
-            align-items: center;
-        }
-        .search-input { 
-            flex: 2; 
-            min-width: 200px;
-            padding: 0.8rem; 
-            border: 1px solid #ccc; 
-            border-radius: 6px; 
-            font-size: 1rem; 
-        }
-        .sort-select { 
-            flex: 1;
-            min-width: 150px;
-            padding: 0.8rem; 
-            border: 1px solid #ccc; 
-            border-radius: 6px; 
-            font-size: 1rem; 
-            cursor: pointer; 
-        }
-        .sort-btn { 
-            padding: 0.8rem 1.2rem; background: #f8f9fa; border: 1px solid #ccc; 
-            border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;
-            white-space: nowrap;
-        }
-        .sort-btn:hover { background-color: #e9ecef; }
-
-        .lessons-grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; 
-        }
-        .lesson-card { 
-            background: white; border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; 
-            transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
-        }
-        .lesson-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.08); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
         
-        .card-img-wrapper { position: relative; height: 200px; background-color: #f4f4f4; }
-        .lesson-img { width: 100%; height: 100%; object-fit: cover; }
-        .badge { 
-            position: absolute; top: 10px; right: 10px; padding: 5px 12px; 
-            border-radius: 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .badge-available { background: #2ecc71; color: white; }
-        .badge-full { background: #e74c3c; color: white; }
-
-        .card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 0.8rem; }
-        .card-title { font-size: 1.25rem; font-weight: 700; margin: 0; color: #0e0a07; }
-        .card-meta { display: flex; flex-direction: column; gap: 0.5rem; color: #666; font-size: 0.9rem; }
-        .meta-row { display: flex; align-items: center; gap: 0.6rem; }
-        .meta-row i { color: #f0c419; width: 16px; text-align: center; }
         
-        .btn-add { 
-            margin-top: auto; padding: 0.8rem; border: none; border-radius: 6px; 
-            background-color: #f0c419; color: #0e0a07; font-weight: 700; cursor: pointer; 
-            font-size: 1rem; transition: background 0.2s;
-        }
-        .btn-add:hover:not(:disabled) { background-color: #dcb317; }
-        .btn-add:disabled { background-color: #e0e0e0; color: #999; cursor: not-allowed; }
+        .search-bar { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+        .search-input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
+        .sort-select { padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
 
-        /* --- CART VIEW --- */
-        .cart-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
-        .cart-item { 
-            display: flex; gap: 1rem; background: white; padding: 1rem; 
-            border-radius: 8px; border: 1px solid #eee; margin-bottom: 1rem; align-items: center; 
-        }
-        .cart-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; background: #eee; }
-        .item-info { flex: 1; }
-        .item-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.2rem; }
-        .item-price { color: #666; font-size: 0.9rem; font-weight: 500;}
-        .btn-remove { 
-            color: #999; background: none; border: none; cursor: pointer; 
-            font-size: 1.1rem; padding: 0.5rem; transition: color 0.2s; 
-        }
-        .btn-remove:hover { color: #e74c3c; }
+        .lessons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        .lesson-card { border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; background: white; }
+        .lesson-image { width: 100%; height: 200px; object-fit: cover; background: #eee; }
+        .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+        .lesson-title { font-size: 18px; font-weight: 700; }
+        .lesson-info { font-size: 14px; color: #666; display: flex; justify-content: space-between; }
+        .btn { padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%; margin-top: auto; transition: 0.2s; }
+        .btn-add { background-color: #0e0a07; color: white; }
+        .btn-add:disabled { background-color: #ccc; cursor: not-allowed; }
+        
+        
+        .cart-item { display: flex; gap: 20px; border: 1px solid #eee; padding: 15px; border-radius: 8px; margin-bottom: 15px; align-items: center; }
+        .cart-img { width: 80px; height: 60px; object-fit: cover; border-radius: 4px; }
+        .cart-details { flex: 1; }
+        .btn-remove { background: #c0392b; color: white; width: auto; padding: 8px 16px; }
 
-        .checkout-card { 
-            background: white; padding: 2rem; border-radius: 12px; border: 1px solid #eee; 
-            position: sticky; top: 100px; height: fit-content; 
-        }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 0.95rem; }
-        .total-row { font-size: 1.2rem; font-weight: 800; border-top: 2px solid #eee; padding-top: 1rem; margin-top: 1rem; }
-        
-        .form-group { margin-bottom: 1rem; }
-        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
-        .form-input { width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 6px; }
-        .error-msg { color: #e74c3c; font-size: 0.8rem; margin-top: 0.25rem; }
-        
-        .btn-checkout { 
-            width: 100%; padding: 1rem; background-color: #0e0a07; color: white; 
-            border: none; border-radius: 8px; font-weight: 700; font-size: 1rem; 
-            cursor: pointer; margin-top: 1rem; transition: background 0.2s;
-        }
-        .btn-checkout:disabled { background-color: #ccc; cursor: not-allowed; }
-        .checkout-status { text-align: center; margin-top: 1rem; font-weight: 600; }
+        .checkout-box { background: #f9f9f9; padding: 30px; border-radius: 12px; margin-top: 40px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+        .form-input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
+        .error { color: #c0392b; font-size: 12px; margin-top: 5px; }
+        .btn-checkout { background-color: #2ecc71; color: white; font-size: 18px; }
 
-        /* UTILS */
-        .empty-state { text-align: center; padding: 4rem 0; color: #777; }
-        .empty-icon { font-size: 3rem; margin-bottom: 1rem; color: #ddd; }
         
-        @media (max-width: 768px) {
-            .cart-layout { grid-template-columns: 1fr; }
-            .toolbar { flex-direction: column; align-items: stretch; }
-            .lessons-grid { grid-template-columns: 1fr; }
-        }
+        .state-msg { text-align: center; font-size: 18px; color: #777; margin-top: 50px; }
     </style>
 </head>
 <body>
 
 <div id="app">
-    <!-- HEADER WRAPPER -->
     <header class="header">
-        <!-- HEADER INNER CONTENT (CENTERED) -->
-        <div class="header-inner">
-            <a href="#" class="logo" @click.prevent="currentView = 'lessons'">
-                <img 
-                    :src="`${API_URL}/images/hubsy.png`" 
-                    @error="$event.target.style.display='none'; $event.target.nextElementSibling.style.display='block'"
-                    alt="Hubsy Logo" 
-                    class="logo-img"
-                >
-                <span style="display:none; font-size: 24px; font-weight: 800; color: #0e0a07;">
-                    <i class="fa-solid fa-graduation-cap" style="color: #f0c419;"></i> Hubsy
-                </span>
-            </a>
-            <nav class="nav-links">
-                <button class="nav-btn" :class="{active: currentView === 'lessons'}" @click="currentView = 'lessons'">
-                    Lessons
-                </button>
-                <button class="nav-btn cart-btn" :class="{active: currentView === 'cart'}" @click="currentView = 'cart'">
-                    <i class="fa-solid fa-cart-shopping"></i> Cart 
-                    <span class="cart-count" v-if="cart.length > 0">{{ cart.length }}</span>
-                </button>
-            </nav>
-        </div>
+        <a href="#" class="logo" @click.prevent="currentView = 'lessons'">
+            <img :src="getImageUrl('hubsy.png')" alt="Hubsy Logo" class="logo-img">
+        </a>
+        <nav>
+            <button class="nav-btn" :class="{active: currentView === 'lessons'}" @click="currentView = 'lessons'">
+                Lessons
+            </button>
+            <button class="nav-btn cart-btn" :class="{active: currentView === 'cart'}" @click="currentView = 'cart'">
+                Cart <span class="cart-count">{{ cart.length }}</span>
+            </button>
+        </nav>
     </header>
 
-    <!-- === VIEW: LESSONS === -->
     <div v-if="currentView === 'lessons'" class="container">
-        <!-- Search & Sort Toolbar -->
-        <div class="toolbar">
-            <input v-model="searchQuery" class="search-input" placeholder="Search by subject, location, or price...">
+        <div class="search-bar">
+            <input 
+                v-model="searchQuery" 
+                @input="performSearch" 
+                class="search-input" 
+                placeholder="Search lessons..."
+            >
             
             <select v-model="sortAttribute" class="sort-select">
                 <option value="title">Sort by Subject</option>
@@ -215,47 +85,27 @@
                 <option value="price">Sort by Price</option>
                 <option value="spaces">Sort by Availability</option>
             </select>
-            
-            <button class="sort-btn" @click="toggleSortOrder">
-                <i :class="sortOrder === 'asc' ? 'fa-solid fa-arrow-up-short-wide' : 'fa-solid fa-arrow-down-short-wide'"></i>
+            <button class="sort-select" @click="toggleSortOrder">
                 {{ sortOrder === 'asc' ? 'Ascending' : 'Descending' }}
             </button>
         </div>
 
-        <!-- Loading State -->
-        <div v-if="loading" class="empty-state">
-            <i class="fa-solid fa-circle-notch fa-spin empty-icon"></i>
-            <p>Loading classes...</p>
-        </div>
-
-        <!-- Empty State -->
-        <div v-else-if="filteredLessons.length === 0" class="empty-state">
-            <i class="fa-regular fa-folder-open empty-icon"></i>
-            <p>No lessons found.</p>
-        </div>
-
-        <!-- Lessons Grid -->
+        <div v-if="loading" class="state-msg">Loading lessons...</div>
         <div v-else class="lessons-grid">
-            <div v-for="lesson in filteredLessons" :key="lesson._id" class="lesson-card">
-                <div class="card-img-wrapper">
-                    <img :src="getImageUrl(lesson.image)" class="lesson-img" alt="Lesson">
-                    <span class="badge" :class="lesson.spaces > 0 ? 'badge-available' : 'badge-full'">
-                        {{ lesson.spaces > 0 ? `${lesson.spaces} Spaces` : 'Sold Out' }}
-                    </span>
-                </div>
+            <div v-for="lesson in sortedLessons" :key="lesson._id" class="lesson-card">
+                <img :src="getImageUrl(lesson.image)" class="lesson-image" alt="Lesson Image">
                 <div class="card-body">
-                    <h3 class="card-title">{{ lesson.title }}</h3>
-                    <div class="card-meta">
-                        <div class="meta-row"><i class="fa-solid fa-location-dot"></i> {{ lesson.location }}</div>
-                        <div class="meta-row"><i class="fa-solid fa-tag"></i> ${{ lesson.price }}</div>
-                        <div class="meta-row"><i class="fa-solid fa-chalkboard-user"></i> {{ lesson.teacher }}</div>
+                    <h3 class="lesson-title">{{ lesson.title }}</h3>
+                    <p>📍 {{ lesson.location }}</p>
+                    <div class="lesson-info">
+                        <span>💰 ${{ lesson.price }}</span>
+                        <span>🎟 {{ lesson.spaces > 0 ? lesson.spaces : 0 }} spaces left</span>
                     </div>
                     <button 
-                        class="btn-add" 
+                        class="btn btn-add" 
                         @click="addToCart(lesson)"
-                        :disabled="lesson.spaces <= 0 || isInCart(lesson)"
+                        :disabled="lesson.spaces <= 0"
                     >
-                        <i v-if="isInCart(lesson)" class="fa-solid fa-check"></i>
                         {{ getButtonText(lesson) }}
                     </button>
                 </div>
@@ -263,70 +113,43 @@
         </div>
     </div>
 
-    <!-- === VIEW: CART === -->
     <div v-if="currentView === 'cart'" class="container">
         <h2>Shopping Cart</h2>
         
-        <div v-if="cart.length === 0" class="empty-state">
-            <i class="fa-solid fa-cart-arrow-down empty-icon"></i>
-            <p>Your cart is empty.</p>
-            <button class="nav-btn" style="color: #0e0a07; text-decoration: underline;" @click="currentView = 'lessons'">
-                Back to Lessons
-            </button>
+        <div v-if="cart.length === 0" class="state-msg">
+            Your cart is empty. <br>
+            <button class="nav-btn" @click="currentView = 'lessons'">Back to Lessons</button>
         </div>
 
-        <div v-else class="cart-layout">
-            <!-- Cart Items List -->
-            <div>
-                <div v-for="item in cart" :key="item._id" class="cart-item">
-                    <img :src="getImageUrl(item.image)" class="cart-thumb">
-                    <div class="item-info">
-                        <h3 class="item-title">{{ item.title }}</h3>
-                        <p class="item-price">${{ item.price }}</p>
-                        <p style="font-size: 0.85rem; color: #888;">ID: {{ item._id }}</p>
-                    </div>
-                    <button class="btn-remove" @click="removeFromCart(item)" title="Remove">
-                        <i class="fa-regular fa-trash-can"></i>
-                    </button>
+        <div v-else>
+            <div v-for="(item, index) in cart" :key="index" class="cart-item">
+                <img :src="getImageUrl(item.image)" class="cart-img">
+                <div class="cart-details">
+                    <h3>{{ item.title }}</h3>
+                    <p>${{ item.price }}</p>
                 </div>
+                <button class="btn btn-remove" @click="removeFromCart(index, item)">Remove</button>
             </div>
 
-            <!-- Checkout Form -->
-            <div class="checkout-card">
-                <h3>Order Summary</h3>
-                <div class="summary-row">
-                    <span>Items</span>
-                    <span>{{ cart.length }}</span>
+            <div class="checkout-box">
+                <h3>Checkout</h3>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input v-model="checkout.name" class="form-input" type="text" placeholder="Enter your name">
+                    <p v-if="!isNameValid && checkout.name" class="error">Name must be letters only</p>
                 </div>
-                <div class="summary-row total-row">
-                    <span>Total</span>
-                    <span>${{ cartTotal }}</span>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input v-model="checkout.phone" class="form-input" type="tel" placeholder="Enter phone number">
+                    <p v-if="!isPhoneValid && checkout.phone" class="error">Phone must be numbers only</p>
                 </div>
-
-                <div style="margin-top: 1.5rem; border-top: 1px solid #eee; padding-top: 1.5rem;">
-                    <h4>Checkout Info</h4>
-                    <div class="form-group">
-                        <label class="form-label">Name</label>
-                        <input v-model="checkout.name" class="form-input" type="text" placeholder="Enter your name">
-                        <p v-if="!isNameValid && checkout.name" class="error-msg">Letters only please.</p>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Phone</label>
-                        <input v-model="checkout.phone" class="form-input" type="tel" placeholder="Enter phone number">
-                        <p v-if="!isPhoneValid && checkout.phone" class="error-msg">Numbers only please.</p>
-                    </div>
-                    <button 
-                        class="btn-checkout" 
-                        :disabled="!isFormValid"
-                        @click="submitOrder"
-                    >
-                        <i v-if="orderStatus === 'Processing...'" class="fa-solid fa-spinner fa-spin"></i>
-                        {{ orderStatus || 'Submit Order' }}
-                    </button>
-                    <p class="checkout-status" :style="{color: orderStatus.includes('Success') ? 'green' : 'red'}">
-                        {{ orderMessage }}
-                    </p>
-                </div>
+                <button 
+                    class="btn btn-checkout" 
+                    :disabled="!isFormValid"
+                    @click="submitOrder"
+                >
+                    {{ orderStatus || 'Checkout' }}
+                </button>
             </div>
         </div>
     </div>
@@ -338,130 +161,115 @@
 
     createApp({
         setup() {
-            // --- STATE DATA ---
+            // --- STATE ---
             const lessons = ref([]);
             const cart = ref([]);
             const currentView = ref('lessons'); 
-            const loading = ref(true);
             
-            // Search & Sort State
+            // Search & Sort
             const searchQuery = ref('');
             const sortAttribute = ref('title');
             const sortOrder = ref('asc');
             
-            // Checkout State
+            // Loading
+            const loading = ref(true);
+            
+            // Checkout
             const checkout = ref({ name: '', phone: '' });
             const orderStatus = ref('');
-            const orderMessage = ref('');
 
             // --- CONFIGURATION ---
-            const API_URL = "https://hubsy.onrender.com"; 
+            const API_URL = "https://hubsy-2-0.onrender.com"; 
 
-            // --- HELPER METHODS ---
-
-            // Fetch data from backend
+            // --- METHODS ---
+            
+            // 1. Fetch Lessons (Default)
             const fetchLessons = async () => {
                 try {
-                    loading.value = true;
                     const res = await fetch(`${API_URL}/api/lessons`);
-                    if (!res.ok) throw new Error("Failed to fetch");
                     lessons.value = await res.json();
                 } catch (err) {
                     console.error("Fetch error:", err);
-                    alert("Could not connect to server.");
                 } finally {
                     loading.value = false;
                 }
             };
 
-            // Get image URL or placeholder
+            // 2. Perform Search (Backend Search - Requirement 10%)
+            const performSearch = async () => {
+                if (!searchQuery.value) {
+                    // If empty, fetch all lessons again
+                    return fetchLessons(); 
+                }
+                try {
+                    // Calls the /api/search route you added to server.js
+                    const res = await fetch(`${API_URL}/api/search?q=${searchQuery.value}`);
+                    lessons.value = await res.json();
+                } catch (err) {
+                    console.error("Search error:", err);
+                }
+            };
+
             const getImageUrl = (img) => {
-                if (!img) return 'https://placehold.co/600x400?text=No+Image';
+                if (!img) return 'https://placehold.co/600x400';
                 return `${API_URL}/images/${img}`;
             };
 
-            // --- CART LOGIC ---
-            
+            // 3. Cart Logic
             const addToCart = (lesson) => {
                 if (lesson.spaces > 0) {
                     cart.value.push(lesson);
-                    lesson.spaces--; // Decrease local space immediately for UX
+                    // Decrement space LOCALLY so the button disables automatically
+                    lesson.spaces--; 
                 }
             };
 
-            const removeFromCart = (itemToRemove) => {
-                // Remove item from cart array
-                const index = cart.value.findIndex(item => item._id === itemToRemove._id);
-                if (index !== -1) {
-                    cart.value.splice(index, 1);
-                    // Add space back locally
-                    const lesson = lessons.value.find(l => l._id === itemToRemove._id);
-                    if (lesson) lesson.spaces++;
+            const removeFromCart = (index, itemToRemove) => {
+                // Remove only ONE instance of the item from cart
+                cart.value.splice(index, 1);
+                
+                // Find the original lesson and add space back locally
+                const lesson = lessons.value.find(l => l._id === itemToRemove._id);
+                if (lesson) {
+                    lesson.spaces++;
                 }
-            };
-
-            const isInCart = (lesson) => {
-                // Check if this specific lesson ID exists in the cart array
-                return cart.value.some(item => item._id === lesson._id);
             };
 
             const getButtonText = (lesson) => {
                 if (lesson.spaces <= 0) return 'Sold Out';
-                if (isInCart(lesson)) return 'In Cart';
                 return 'Add to Cart';
             };
 
-            const cartTotal = computed(() => {
-                return cart.value.reduce((sum, i) => sum + i.price, 0);
-            });
+            // 4. SORT FUNCTIONALITY (Requirement 10%)
+            // We use 'lessons.value' directly because 'search' now updates the list via API
+            const sortedLessons = computed(() => {
+                let temp = [...lessons.value]; // Create a copy
 
-            // --- FILTER & SORT LOGIC ---
-
-            const filteredLessons = computed(() => {
-                let temp = lessons.value;
-
-                // 1. Search Filter
-                if (searchQuery.value) {
-                    const q = searchQuery.value.toLowerCase();
-                    temp = temp.filter(l => 
-                        l.title.toLowerCase().includes(q) || 
-                        l.location.toLowerCase().includes(q) ||
-                        l.teacher.toLowerCase().includes(q)
-                    );
-                }
-
-                // 2. Sort Logic
-                temp = temp.sort((a, b) => {
+                return temp.sort((a, b) => {
                     let valA = a[sortAttribute.value];
                     let valB = b[sortAttribute.value];
                     
-                    if (typeof valA === 'string') {
-                        valA = valA.toLowerCase();
-                        valB = valB.toLowerCase();
-                    }
+                    // Handle case-insensitive string sorting
+                    if (typeof valA === 'string') valA = valA.toLowerCase();
+                    if (typeof valB === 'string') valB = valB.toLowerCase();
 
                     if (valA < valB) return sortOrder.value === 'asc' ? -1 : 1;
                     if (valA > valB) return sortOrder.value === 'asc' ? 1 : -1;
                     return 0;
                 });
-
-                return temp;
             });
 
             const toggleSortOrder = () => {
                 sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc';
             };
 
-            // --- CHECKOUT LOGIC ---
-
-            // Regex Validation
+            // 5. Checkout Validation
             const isNameValid = computed(() => /^[a-zA-Z\s]+$/.test(checkout.value.name));
             const isPhoneValid = computed(() => /^[0-9]+$/.test(checkout.value.phone));
             const isFormValid = computed(() => isNameValid.value && isPhoneValid.value && cart.value.length > 0);
 
+            // 6. Submit Order (FIXED SPACES UPDATING)
             const submitOrder = async () => {
-                if (!isFormValid.value) return;
-
                 orderStatus.value = "Processing...";
                 
                 const orderData = {
@@ -469,11 +277,10 @@
                     phone: checkout.value.phone,
                     lessonIds: cart.value.map(i => i._id),
                     spacesBooked: cart.value.length,
-                    total: cartTotal.value
                 };
 
                 try {
-                    // 1. POST Order to Backend
+                    // A. POST Order
                     const res = await fetch(`${API_URL}/api/orders`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -481,46 +288,49 @@
                     });
 
                     if (res.ok) {
-                        // 2. PUT Update Spaces for EACH item
+                        // B. PUT Update Spaces (Fixed Logic)
+                        // 1. Count how many of each lesson we bought
+                        const updates = {};
                         for (const item of cart.value) {
-                             // We calculate new spaces based on our local decremented value
-                             const lessonRef = lessons.value.find(l => l._id === item._id);
-                             if (lessonRef) {
-                                 await fetch(`${API_URL}/api/lessons/${item._id}`, {
-                                    method: 'PUT',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ spaces: lessonRef.spaces })
-                                 });
-                             }
+                            if (!updates[item._id]) {
+                                // Store the current spaces (from the object in cart)
+                                updates[item._id] = { 
+                                    spaces: item.spaces, // This is the *remaining* space locally
+                                    id: item._id 
+                                };
+                            }
+                            // Note: We already subtracted spaces locally in 'addToCart'.
+                            // So 'item.spaces' is actually the target number we want to save!
                         }
 
-                        // Success!
-                        orderStatus.value = "Success";
-                        orderMessage.value = "Order Submitted Successfully!";
+                        // 2. Send one update per unique lesson
+                        for (const key in updates) {
+                             const item = updates[key];
+                             await fetch(`${API_URL}/api/lessons/${item.id}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ spaces: item.spaces }) 
+                             });
+                        }
+
+                        alert("Order Submitted Successfully!");
+                        cart.value = [];
+                        checkout.value = { name: '', phone: '' };
+                        orderStatus.value = '';
+                        currentView.value = 'lessons';
                         
-                        // Reset
-                        setTimeout(() => {
-                            cart.value = [];
-                            checkout.value = { name: '', phone: '' };
-                            orderStatus.value = '';
-                            orderMessage.value = '';
-                            currentView.value = 'lessons';
-                            // Fetch fresh data to ensure syncing
-                            fetchLessons();
-                        }, 2000);
-                        
+                        // C. Fetch fresh data from server to ensure accuracy
+                        fetchLessons(); 
                     } else {
-                        orderStatus.value = "Failed";
-                        orderMessage.value = "Server error. Try again.";
+                        orderStatus.value = "Failed. Try again.";
                     }
                 } catch (e) {
                     console.error(e);
-                    orderStatus.value = "Error";
-                    orderMessage.value = "Connection failed.";
+                    orderStatus.value = "Error.";
                 }
             };
 
-            // Initialize
+            // Lifecycle
             onMounted(() => {
                 fetchLessons();
             });
@@ -528,10 +338,9 @@
             return {
                 currentView, lessons, cart, loading,
                 searchQuery, sortAttribute, sortOrder,
-                filteredLessons, toggleSortOrder,
-                getImageUrl, addToCart, removeFromCart, isInCart, getButtonText,
-                checkout, isNameValid, isPhoneValid, isFormValid, submitOrder, 
-                orderStatus, orderMessage, cartTotal, API_URL
+                sortedLessons, toggleSortOrder, performSearch,
+                getImageUrl, addToCart, removeFromCart, getButtonText,
+                checkout, isNameValid, isPhoneValid, isFormValid, submitOrder, orderStatus
             };
         }
     }).mount('#app');

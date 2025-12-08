@@ -142,8 +142,17 @@
     <!-- HEADER -->
     <header class="header">
         <a href="#" class="logo" @click.prevent="currentView = 'lessons'">
-            <!-- FIX: Loading Logo from Render Backend -->
-            <img :src="getImageUrl('hubsy.png')" alt="Hubsy Logo" class="logo-img">
+            <!-- FIX: Loading Logo from Render Backend with fallback -->
+            <img 
+                :src="`${API_URL}/images/hubsy.png`" 
+                @error="$event.target.style.display='none'; $event.target.nextElementSibling.style.display='block'"
+                alt="Hubsy Logo" 
+                class="logo-img"
+            >
+            <!-- Fallback Text Logo if Image Fails -->
+            <span style="display:none; font-size: 24px; font-weight: 800; color: #0e0a07;">
+                <i class="fa-solid fa-graduation-cap" style="color: #f0c419;"></i> Hubsy
+            </span>
         </a>
         <nav class="nav-links">
             <button class="nav-btn" :class="{active: currentView === 'lessons'}" @click="currentView = 'lessons'">
@@ -490,7 +499,7 @@
                 filteredLessons, toggleSortOrder,
                 getImageUrl, addToCart, removeFromCart, isInCart, getButtonText,
                 checkout, isNameValid, isPhoneValid, isFormValid, submitOrder, 
-                orderStatus, orderMessage, cartTotal
+                orderStatus, orderMessage, cartTotal, API_URL
             };
         }
     }).mount('#app');

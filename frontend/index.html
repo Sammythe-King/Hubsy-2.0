@@ -6,50 +6,126 @@
     <title>Hubsy - Partial Vue App</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <style>
-        
+        /* --- RESET & BASE --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: system-ui, -apple-system, sans-serif; background-color: #fefefe; color: #333; }
         
-        
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background-color: #fff; border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 4px; font-weight: 100; color: #0e0a07; text-decoration: none; height: 20px; width: 20px;}
-        .nav-btn { padding: 10px 20px; background: none; border: none; font-size: 16px; cursor: pointer; color: #555; }
-        .nav-btn.active { font-weight: bold; color: #0e0a07; }
-        .cart-btn { position: relative; background-color: #f0c419; color: #0e0a07; font-weight: bold; border-radius: 8px; }
-        .cart-count { background: #c0392b; color: white; padding: 2px 6px; border-radius: 50%; font-size: 12px; margin-left: 5px; }
+        /* --- HEADER & NAV (IMPROVED) --- */
+        .header { 
+            background-color: #fff; 
+            border-bottom: 1px solid #e0e0e0; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
 
-        
+        /* The Nav container aligns items horizontally */
+        nav {
+            display: flex;
+            justify-content: space-between; /* Pushes Logo left, Buttons right */
+            align-items: center; /* Vertically centers them */
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+        }
+
+        /* Logo Styling */
+        .logo { 
+            font-size: 24px; /* Fixed: Was 4px */
+            font-weight: 800; 
+            color: #0e0a07; 
+            text-decoration: none; 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            height: 40px; /* Set a proper height for the image */
+            width: auto;
+        }
+
+        /* Group for the buttons */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 15px; /* Spacing between Lessons and Cart */
+        }
+
+        .nav-btn { 
+            padding: 10px 15px; 
+            background: none; 
+            border: none; 
+            font-size: 16px; 
+            cursor: pointer; 
+            color: #555; 
+            transition: color 0.2s;
+        }
+
+        .nav-btn:hover { color: #000; }
+        .nav-btn.active { font-weight: bold; color: #0e0a07; }
+
+        .cart-btn { 
+            position: relative; 
+            background-color: #f0c419; 
+            color: #0e0a07; 
+            font-weight: bold; 
+            border-radius: 8px; 
+            padding: 10px 20px;
+            transition: background 0.2s;
+        }
+        .cart-btn:hover { background-color: #eebb10; }
+
+        .cart-count { 
+            background: #c0392b; 
+            color: white; 
+            padding: 2px 6px; 
+            border-radius: 50%; 
+            font-size: 12px; 
+            margin-left: 5px; 
+            vertical-align: middle;
+        }
+
+        /* --- CONTENT STYLES --- */
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
         
-        
+        /* Search & Sort */
         .search-bar { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
         .search-input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
-        .sort-select { padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
+        .sort-select { padding: 12px; border: 1px solid #ccc; border-radius: 8px; background: white; cursor: pointer; }
 
+        /* Grid */
         .lessons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        .lesson-card { border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; background: white; }
+        .lesson-card { border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; background: white; transition: transform 0.2s; }
+        .lesson-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .lesson-image { width: 100%; height: 200px; object-fit: cover; background: #eee; }
         .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
         .lesson-title { font-size: 18px; font-weight: 700; }
         .lesson-info { font-size: 14px; color: #666; display: flex; justify-content: space-between; }
+        
+        /* Buttons */
         .btn { padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%; margin-top: auto; transition: 0.2s; }
         .btn-add { background-color: #0e0a07; color: white; }
         .btn-add:disabled { background-color: #ccc; cursor: not-allowed; }
+        .btn-add:hover:not(:disabled) { background-color: #333; }
         
-        
-        .cart-item { display: flex; gap: 20px; border: 1px solid #eee; padding: 15px; border-radius: 8px; margin-bottom: 15px; align-items: center; }
+        /* Cart Page */
+        .cart-item { display: flex; gap: 20px; border: 1px solid #eee; padding: 15px; border-radius: 8px; margin-bottom: 15px; align-items: center; background: white; }
         .cart-img { width: 80px; height: 60px; object-fit: cover; border-radius: 4px; }
         .cart-details { flex: 1; }
         .btn-remove { background: #c0392b; color: white; width: auto; padding: 8px 16px; }
+        .btn-remove:hover { background: #a93226; }
 
-        .checkout-box { background: #f9f9f9; padding: 30px; border-radius: 12px; margin-top: 40px; }
+        /* Checkout */
+        .checkout-box { background: #f9f9f9; padding: 30px; border-radius: 12px; margin-top: 40px; border: 1px solid #eee; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
         .form-input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
         .error { color: #c0392b; font-size: 12px; margin-top: 5px; }
         .btn-checkout { background-color: #2ecc71; color: white; font-size: 18px; }
+        .btn-checkout:disabled { background-color: #ccc; cursor: not-allowed; }
 
-        
         .state-msg { text-align: center; font-size: 18px; color: #777; margin-top: 50px; }
     </style>
 </head>
@@ -57,18 +133,20 @@
 
 <div id="app">
     <header class="header">
-
         <nav>
             <a href="#" class="logo" @click.prevent="currentView = 'lessons'">
-
                <img :src="getImageUrl('hubsy.png')" alt="Hubsy Logo" class="logo-img">
+               <span>Hubsy</span>
             </a>
-            <button class="nav-btn" :class="{active: currentView === 'lessons'}" @click="currentView = 'lessons'">
-                Lessons
-            </button>
-            <button class="nav-btn cart-btn" :class="{active: currentView === 'cart'}" @click="currentView = 'cart'">
-                Cart <span class="cart-count">{{ cart.length }}</span>
-            </button>
+
+            <div class="nav-links">
+                <button class="nav-btn" :class="{active: currentView === 'lessons'}" @click="currentView = 'lessons'">
+                    Lessons
+                </button>
+                <button class="nav-btn cart-btn" :class="{active: currentView === 'cart'}" @click="currentView = 'cart'">
+                    Cart <span class="cart-count">{{ cart.length }}</span>
+                </button>
+            </div>
         </nav>
     </header>
 
@@ -120,7 +198,8 @@
         
         <div v-if="cart.length === 0" class="state-msg">
             Your cart is empty. <br>
-            <button class="nav-btn" @click="currentView = 'lessons'">Back to Lessons</button>
+            <br>
+            <button class="nav-btn" style="background:#ddd; border-radius:6px;" @click="currentView = 'lessons'">Back to Lessons</button>
         </div>
 
         <div v-else>
@@ -197,14 +276,12 @@
                 }
             };
 
-            // 2. Perform Search (Backend Search - Requirement 10%)
+            // 2. Perform Search (Backend Search)
             const performSearch = async () => {
                 if (!searchQuery.value) {
-                    // If empty, fetch all lessons again
                     return fetchLessons(); 
                 }
                 try {
-                    // Calls the /api/search route you added to server.js
                     const res = await fetch(`${API_URL}/api/search?q=${searchQuery.value}`);
                     lessons.value = await res.json();
                 } catch (err) {
@@ -221,16 +298,12 @@
             const addToCart = (lesson) => {
                 if (lesson.spaces > 0) {
                     cart.value.push(lesson);
-                    // Decrement space LOCALLY so the button disables automatically
                     lesson.spaces--; 
                 }
             };
 
             const removeFromCart = (index, itemToRemove) => {
-                // Remove only ONE instance of the item from cart
                 cart.value.splice(index, 1);
-                
-                // Find the original lesson and add space back locally
                 const lesson = lessons.value.find(l => l._id === itemToRemove._id);
                 if (lesson) {
                     lesson.spaces++;
@@ -242,16 +315,14 @@
                 return 'Add to Cart';
             };
 
-            // 4. SORT FUNCTIONALITY (Requirement 10%)
-            // We use 'lessons.value' directly because 'search' now updates the list via API
+            // 4. SORT FUNCTIONALITY
             const sortedLessons = computed(() => {
-                let temp = [...lessons.value]; // Create a copy
+                let temp = [...lessons.value]; 
 
                 return temp.sort((a, b) => {
                     let valA = a[sortAttribute.value];
                     let valB = b[sortAttribute.value];
                     
-                    // Handle case-insensitive string sorting
                     if (typeof valA === 'string') valA = valA.toLowerCase();
                     if (typeof valB === 'string') valB = valB.toLowerCase();
 
@@ -270,7 +341,7 @@
             const isPhoneValid = computed(() => /^[0-9]+$/.test(checkout.value.phone));
             const isFormValid = computed(() => isNameValid.value && isPhoneValid.value && cart.value.length > 0);
 
-            // 6. Submit Order (FIXED SPACES UPDATING)
+            // 6. Submit Order
             const submitOrder = async () => {
                 orderStatus.value = "Processing...";
                 
@@ -282,7 +353,6 @@
                 };
 
                 try {
-                    // A. POST Order
                     const res = await fetch(`${API_URL}/api/orders`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -290,22 +360,17 @@
                     });
 
                     if (res.ok) {
-                        // B. PUT Update Spaces (Fixed Logic)
-                        // 1. Count how many of each lesson we bought
+                        // Update Spaces
                         const updates = {};
                         for (const item of cart.value) {
                             if (!updates[item._id]) {
-                                // Store the current spaces (from the object in cart)
                                 updates[item._id] = { 
-                                    spaces: item.spaces, // This is the *remaining* space locally
+                                    spaces: item.spaces,
                                     id: item._id 
                                 };
                             }
-                            // Note: We already subtracted spaces locally in 'addToCart'.
-                            // So 'item.spaces' is actually the target number we want to save!
                         }
 
-                        // 2. Send one update per unique lesson
                         for (const key in updates) {
                              const item = updates[key];
                              await fetch(`${API_URL}/api/lessons/${item.id}`, {
@@ -320,8 +385,6 @@
                         checkout.value = { name: '', phone: '' };
                         orderStatus.value = '';
                         currentView.value = 'lessons';
-                        
-                        // C. Fetch fresh data from server to ensure accuracy
                         fetchLessons(); 
                     } else {
                         orderStatus.value = "Failed. Try again.";
@@ -332,7 +395,6 @@
                 }
             };
 
-            // Lifecycle
             onMounted(() => {
                 fetchLessons();
             });

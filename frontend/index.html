@@ -6,11 +6,11 @@
     <title>Hubsy - Partial Vue App</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <style>
-        /* GLOBAL STYLES */
+        
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: system-ui, -apple-system, sans-serif; background-color: #fefefe; color: #333; }
         
-        /* HEADER */
+        
         .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background-color: #fff; border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 100; }
         .logo { font-size: 24px; font-weight: 800; color: #0e0a07; text-decoration: none; }
         .nav-btn { padding: 10px 20px; background: none; border: none; font-size: 16px; cursor: pointer; color: #555; }
@@ -18,10 +18,10 @@
         .cart-btn { position: relative; background-color: #f0c419; color: #0e0a07; font-weight: bold; border-radius: 8px; }
         .cart-count { background: #c0392b; color: white; padding: 2px 6px; border-radius: 50%; font-size: 12px; margin-left: 5px; }
 
-        /* CONTAINERS */
+        
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
         
-        /* LESSONS VIEW */
+        
         .search-bar { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
         .search-input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
         .sort-select { padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
@@ -36,7 +36,7 @@
         .btn-add { background-color: #0e0a07; color: white; }
         .btn-add:disabled { background-color: #ccc; cursor: not-allowed; }
         
-        /* CART VIEW */
+        
         .cart-item { display: flex; gap: 20px; border: 1px solid #eee; padding: 15px; border-radius: 8px; margin-bottom: 15px; align-items: center; }
         .cart-img { width: 80px; height: 60px; object-fit: cover; border-radius: 4px; }
         .cart-details { flex: 1; }
@@ -49,7 +49,7 @@
         .error { color: #c0392b; font-size: 12px; margin-top: 5px; }
         .btn-checkout { background-color: #2ecc71; color: white; font-size: 18px; }
 
-        /* LOADING/EMPTY STATES */
+        
         .state-msg { text-align: center; font-size: 18px; color: #777; margin-top: 50px; }
     </style>
 </head>
@@ -57,7 +57,9 @@
 
 <div id="app">
     <header class="header">
-        <a href="#" class="logo" @click.prevent="currentView = 'lessons'">Hubsy</a>
+        <a href="#" class="logo" @click.prevent="currentView = 'lessons'">
+            <img src="hubsy.png" alt="Hubsy Logo" class="logo-img">
+        </a>
         <nav>
             <button class="nav-btn" :class="{active: currentView === 'lessons'}" @click="currentView = 'lessons'">
                 Lessons

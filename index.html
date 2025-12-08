@@ -12,7 +12,7 @@
         
         
         .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background-color: #fff; border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 24px; font-weight: 800; color: #0e0a07; text-decoration: none; }
+        .logo { font-size: 4px; font-weight: 100; color: #0e0a07; text-decoration: none; height: 20px; width: 20px;}
         .nav-btn { padding: 10px 20px; background: none; border: none; font-size: 16px; cursor: pointer; color: #555; }
         .nav-btn.active { font-weight: bold; color: #0e0a07; }
         .cart-btn { position: relative; background-color: #f0c419; color: #0e0a07; font-weight: bold; border-radius: 8px; }
@@ -58,16 +58,7 @@
 <div id="app">
     <header class="header">
         <a href="#" class="logo" @click.prevent="currentView = 'lessons'">
-            <img 
-                :src="`${API_URL}/images/hubsy.png`" 
-                @error="$event.target.style.display='none'; $event.target.nextElementSibling.style.display='block'"
-                alt="Hubsy Logo" 
-                class="logo-img"
-            >
-            <!-- Fallback Text Logo if Image Fails -->
-            <span style="display:none; font-size: 24px; font-weight: 800; color: #0e0a07;">
-                <i class="fa-solid fa-graduation-cap" style="color: #f0c419;"></i> Hubsy
-            </span>
+            <img :src="getImageUrl('hubsy.png')" alt="Hubsy Logo" class="logo-img">
         </a>
         <nav>
             <button class="nav-btn" :class="{active: currentView === 'lessons'}" @click="currentView = 'lessons'">

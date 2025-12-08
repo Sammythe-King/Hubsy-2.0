@@ -1,0 +1,318 @@
+{
+	"info": {
+		"_postman_id": "0b544104-3091-4040-93b4-496bf4ae4b0e",
+		"name": "Hubsy2 App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49675664",
+		"_collection_link": "https://iyallasamuel43-7113168.postman.co/workspace/SAMUEL-IYALLA's-Workspace~9d25d720-cdef-4847-8214-8ae2709eba6e/collection/49675664-0b544104-3091-4040-93b4-496bf4ae4b0e?action=share&source=collection_link&creator=49675664"
+	},
+	"item": [
+		{
+			"name": "Get ALL Lessons",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://hubsy-2-0.onrender.com/api/lessons",
+							"protocol": "https",
+							"host": [
+								"hubsy-2-0",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"lessons"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 07 Dec 2025 22:19:43 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1574"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-RAY",
+							"value": "9aa767f9cc2b8468-JNB"
+						},
+						{
+							"key": "access-control-allow-origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "etag",
+							"value": "W/\"156c-bcOyIlAhzak81p7OVAuolXZRw24\""
+						},
+						{
+							"key": "rndr-id",
+							"value": "55884f1a-0bf6-4b29"
+						},
+						{
+							"key": "vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "x-powered-by",
+							"value": "Express"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "Render"
+						},
+						{
+							"key": "cf-cache-status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"_id\": \"64f1e3c8f2d1c4a9a0b1e001\",\n        \"title\": \"Middle School Full Curriculum\",\n        \"description\": \"Full-year homeschool class for ages 11–13 covering Math, Science, and more.\",\n        \"price\": 125,\n        \"duration_weeks\": 42,\n        \"sessions_per_week\": 4,\n        \"session_duration_min\": 120,\n        \"age_min\": 11,\n        \"age_max\": 13,\n        \"students_limit\": 18,\n        \"teacher\": \"Hip-Hop & Teach Academy\",\n        \"rating\": 5,\n        \"spaces\": 5,\n        \"location\": \"5 Labourdonnais St, Port Louis (The Heritage Building)\",\n        \"image\": \"Middle-School.jpeg\",\n        \"features\": [\n            \"Live video meetings\",\n            \"Homework\",\n            \"Assessments\",\n            \"Certificate of Completion\"\n        ],\n        \"created_at\": \"2025-11-11T00:00:00.000Z\"\n    },\n    {\n        \"_id\": \"64f1e3c8f2d1c4a9a0b1e002\",\n        \"title\": \"High School STEM Program\",\n        \"description\": \"An advanced, immersive STEM experience for exceptional students ages 14–17.\",\n        \"price\": 200,\n        \"duration_weeks\": 40,\n        \"sessions_per_week\": 5,\n        \"session_duration_min\": 90,\n        \"age_min\": 14,\n        \"age_max\": 17,\n        \"students_limit\": 20,\n        \"teacher\": \"FutureTech Academy\",\n        \"rating\": 4.8,\n        \"spaces\": 2,\n        \"location\": \"Avenue des Palmiers, Moka (University Campus Annex)\",\n        \"image\": \"Robotic.jpeg\",\n        \"features\": [\n            \"Lab experiments\",\n            \"Projects\",\n            \"Assessments\",\n            \"Certificate of Completion\"\n        ],\n        \"created_at\": \"2025-11-11T00:00:00.000Z\"\n    },\n    {\n        \"_id\": \"64f1e3c8f2d1c4a9a0b1e003\",\n        \"title\": \"Elementary Arts & Crafts\",\n        \"description\": \"Hands-on creative classes for kids aged 6–10, covering painting, drawing, and DIY crafts.\",\n        \"price\": 75,\n        \"duration_weeks\": 30,\n        \"sessions_per_week\": 3,\n        \"session_duration_min\": 60,\n        \"age_min\": 6,\n        \"age_max\": 10,\n        \"students_limit\": 15,\n        \"teacher\": \"Creative Kids Academy\",\n        \"rating\": 4.9,\n        \"spaces\": 11,\n        \"location\": \"Royal Road, Grand Baie (The North Coast Studio)\",\n        \"image\": \"Art.jpeg\",\n        \"features\": [\n            \"Live video sessions\",\n            \"Materials included\",\n            \"Fun assignments\",\n            \"Certificate of Participation\"\n        ],\n        \"created_at\": \"2025-11-11T00:00:00.000Z\"\n    },\n    {\n        \"_id\": \"64f1e3c8f2d1c4a9a0b1e004\",\n        \"title\": \"Beginner Coding for Teens\",\n        \"description\": \"Learn the basics of coding with fun projects and interactive lessons for ages 12–16.\",\n        \"price\": 150,\n        \"duration_weeks\": 36,\n        \"sessions_per_week\": 4,\n        \"session_duration_min\": 90,\n        \"age_min\": 12,\n        \"age_max\": 16,\n        \"students_limit\": 18,\n        \"teacher\": \"CodeSpark Academy\",\n        \"rating\": 4.7,\n        \"spaces\": 0,\n        \"location\": \"St. Paul Avenue, Curepipe (Cyber Hub Center, 2nd Floor)\",\n        \"image\": \"Python.jpg\",\n        \"features\": [\n            \"Live coding sessions\",\n            \"Project-based learning\",\n            \"Quizzes & homework\",\n            \"Certificate of Completion\"\n        ],\n        \"created_at\": \"2025-11-11T00:00:00.000Z\"\n    },\n    {\n        \"_id\": \"64f1e3c8f2d1c4a9a0b1e005\",\n        \"title\": \"High School Literature & Writing\",\n        \"description\": \"Explore literature, creative writing, and essay skills for ages 14–18.\",\n        \"price\": 130,\n        \"duration_weeks\": 38,\n        \"sessions_per_week\": 3,\n        \"session_duration_min\": 90,\n        \"age_min\": 14,\n        \"age_max\": 18,\n        \"students_limit\": 20,\n        \"teacher\": \"Literary Minds Academy\",\n        \"rating\": 4.8,\n        \"spaces\": 0,\n        \"location\": \"Ariel Lane, Quatre Bornes (Municipal Library)\",\n        \"image\": \"Writing.jpg\",\n        \"features\": [\n            \"Reading assignments\",\n            \"Writing workshops\",\n            \"Peer reviews\",\n            \"Certificate of Completion\"\n        ],\n        \"created_at\": \"2025-11-11T00:00:00.000Z\"\n    },\n    {\n        \"_id\": \"64f1e3c8f2d1c4a9a0b1e006\",\n        \"title\": \"Middle School Robotics\",\n        \"description\": \"Hands-on robotics classes for ages 11–14, covering basic electronics and programming.\",\n        \"price\": 180,\n        \"duration_weeks\": 36,\n        \"sessions_per_week\": 3,\n        \"session_duration_min\": 120,\n        \"age_min\": 11,\n        \"age_max\": 14,\n        \"students_limit\": 15,\n        \"teacher\": \"RoboKids Academy\",\n        \"rating\": 4.9,\n        \"spaces\": 8,\n        \"location\": \"Beau Bassin\",\n        \"image\": \"Robotics.jpeg\",\n        \"features\": [\n            \"Robot building\",\n            \"Coding lessons\",\n            \"Competitions\",\n            \"Certificate of Completion\"\n        ],\n        \"created_at\": \"2025-11-11T00:00:00.000Z\"\n    },\n    {\n        \"_id\": \"64f1e3c8f2d1c4a9a0b1e007\",\n        \"title\": \"High School Advanced Math\",\n        \"description\": \"Intensive math program for ages 15–18 preparing for exams and competitions.\",\n        \"price\": 220,\n        \"duration_weeks\": 40,\n        \"sessions_per_week\": 5,\n        \"session_duration_min\": 90,\n        \"age_min\": 15,\n        \"age_max\": 18,\n        \"students_limit\": 20,\n        \"teacher\": \"MathGenius Academy\",\n        \"rating\": 5,\n        \"spaces\": 3,\n        \"location\": \"Rose Hill\",\n        \"image\": \"Math.jpg\",\n        \"features\": [\n            \"Live problem-solving\",\n            \"Homework assignments\",\n            \"Exam prep\",\n            \"Certificate of Completion\"\n        ],\n        \"created_at\": \"2025-11-11T00:00:00.000Z\"\n    },\n    {\n        \"_id\": \"64f1e3c8f2d1c4a9a0b1e008\",\n        \"title\": \"Creative Writing for Teens\",\n        \"description\": \"Learn storytelling, poetry, and essay writing for ages 13–17.\",\n        \"price\": 140,\n        \"duration_weeks\": 32,\n        \"sessions_per_week\": 3,\n        \"session_duration_min\": 90,\n        \"age_min\": 13,\n        \"age_max\": 17,\n        \"students_limit\": 18,\n        \"teacher\": \"Writers’ Workshop Academy\",\n        \"rating\": 4.8,\n        \"spaces\": 0,\n        \"location\": \"Vacoas-Phoenix\",\n        \"image\": \"Teen-Writing.jpeg\",\n        \"features\": [\n            \"Story exercises\",\n            \"Peer reviews\",\n            \"Workshops\",\n            \"Certificate of Completion\"\n        ],\n        \"created_at\": \"2025-11-11T00:00:00.000Z\"\n    },\n    {\n        \"_id\": \"64f1e3c8f2d1c4a9a0b1e009\",\n        \"title\": \"Elementary Science Explorers\",\n        \"description\": \"Fun science experiments and activities for ages 7–10.\",\n        \"price\": 90,\n        \"duration_weeks\": 28,\n        \"sessions_per_week\": 2,\n        \"session_duration_min\": 60,\n        \"age_min\": 7,\n        \"age_max\": 10,\n        \"students_limit\": 15,\n        \"teacher\": \"Little Scientists Academy\",\n        \"rating\": 4.9,\n        \"spaces\": 14,\n        \"location\": \"Flic en Flac\",\n        \"image\": \"science.png\",\n        \"features\": [\n            \"Experiments\",\n            \"Interactive lessons\",\n            \"Quizzes\",\n            \"Certificate of Completion\"\n        ],\n        \"created_at\": \"2025-11-11T00:00:00.000Z\"\n    },\n    {\n        \"_id\": \"64f1e3c8f2d1c4a9a0b1e010\",\n        \"title\": \"Beginner Music Lessons\",\n        \"description\": \"Learn the basics of music theory and instruments for ages 8–14.\",\n        \"price\": 110,\n        \"duration_weeks\": 30,\n        \"sessions_per_week\": 2,\n        \"session_duration_min\": 75,\n        \"age_min\": 8,\n        \"age_max\": 14,\n        \"students_limit\": 12,\n        \"teacher\": \"Melody Makers Academy\",\n        \"rating\": 4.7,\n        \"spaces\": 3,\n        \"location\": \"Tamarin\",\n        \"image\": \"Music.jpeg\",\n        \"features\": [\n            \"Instrument practice\",\n            \"Music theory\",\n            \"Performances\",\n            \"Certificate of Completion\"\n        ],\n        \"created_at\": \"2025-11-11T00:00:00.000Z\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Create Order",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Postman Tester\",\r\n    \"phone\": \"1234567890\",\r\n    \"lessonIds\": [],\r\n    \"spacesBooked\": 1,\r\n    \"total\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://hubsy-2-0.onrender.com/api/orders",
+							"protocol": "https",
+							"host": [
+								"hubsy-2-0",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 07 Dec 2025 22:21:44 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "52"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-RAY",
+							"value": "9aa76aeb79d78c8b-JNB"
+						},
+						{
+							"key": "access-control-allow-origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "etag",
+							"value": "W/\"3d-kFCpeB8hwHmxuKeh6782/31axq0\""
+						},
+						{
+							"key": "rndr-id",
+							"value": "53aa751e-0ec9-45c2"
+						},
+						{
+							"key": "vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "x-powered-by",
+							"value": "Express"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "Render"
+						},
+						{
+							"key": "cf-cache-status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"acknowledged\": true,\n    \"insertedId\": \"6935fdf85c4e8e4d232f2d56\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Lesson Update Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"spaces\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://hubsy.onrender.com/api/lessons/64f1e3c8f2d1c4a9a0b1e001",
+							"protocol": "https",
+							"host": [
+								"hubsy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"lessons",
+								"64f1e3c8f2d1c4a9a0b1e001"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 07 Dec 2025 22:24:15 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "406"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-RAY",
+							"value": "9aa76e9fdb8ef7f6-JNB"
+						},
+						{
+							"key": "access-control-allow-origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "etag",
+							"value": "W/\"242-Lp89jvLQgYrdY7xc1EKy1dH+G7Q\""
+						},
+						{
+							"key": "rndr-id",
+							"value": "970438c4-56c4-4dd6"
+						},
+						{
+							"key": "vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "x-powered-by",
+							"value": "Express"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "Render"
+						},
+						{
+							"key": "cf-cache-status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"_id\": \"64f1e3c8f2d1c4a9a0b1e001\",\n    \"title\": \"Middle School Full Curriculum\",\n    \"description\": \"Full-year homeschool class for ages 11–13 covering Math, Science, and more.\",\n    \"price\": 125,\n    \"duration_weeks\": 42,\n    \"sessions_per_week\": 4,\n    \"session_duration_min\": 120,\n    \"age_min\": 11,\n    \"age_max\": 13,\n    \"students_limit\": 18,\n    \"teacher\": \"Hip-Hop & Teach Academy\",\n    \"rating\": 5,\n    \"spaces\": 5,\n    \"location\": \"5 Labourdonnais St, Port Louis (The Heritage Building)\",\n    \"image\": \"Middle-School.jpeg\",\n    \"features\": [\n        \"Live video meetings\",\n        \"Homework\",\n        \"Assessments\",\n        \"Certificate of Completion\"\n    ],\n    \"created_at\": \"2025-11-11T00:00:00.000Z\"\n}"
+				}
+			]
+		}
+	]
+}

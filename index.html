@@ -32,7 +32,7 @@
 
         /* Logo Styling */
         .logo { 
-            font-size: 24px; /* Fixed: Was 4px */
+            font-size: 15px; /* Fixed: Was 4px */
             font-weight: 800; 
             color: #0e0a07; 
             text-decoration: none; 
@@ -42,10 +42,23 @@
         }
 
         .logo-img {
-            height: 40px; /* Set a proper height for the image */
+            height: 100px; /* Set a proper height for the image */
             width: auto;
         }
 
+        /* Add this to your CSS to style the disabled cart button */
+        .cart-btn:disabled {
+            background-color: #e0e0e0; /* Grey background */
+            color: #999; /* Grey text */
+            cursor: not-allowed; /* Shows a 'no' symbol on hover */
+            box-shadow: none;
+        }
+        
+        /* Optional: Hide the red counter badge when cart is empty/disabled */
+        .cart-btn:disabled .cart-count {
+            display: none;
+        }
+        
         /* Group for the buttons */
         .nav-links {
             display: flex;
@@ -136,14 +149,13 @@
         <nav>
             <a href="#" class="logo" @click.prevent="currentView = 'lessons'">
                <img :src="getImageUrl('hubsy.png')" alt="Hubsy Logo" class="logo-img">
-               <span>Hubsy</span>
             </a>
 
             <div class="nav-links">
                 <button class="nav-btn" :class="{active: currentView === 'lessons'}" @click="currentView = 'lessons'">
                     Lessons
                 </button>
-                <button class="nav-btn cart-btn" :class="{active: currentView === 'cart'}" @click="currentView = 'cart'">
+                <button class="nav-btn cart-btn" :disabled="cart.length === 0" :class="{active: currentView === 'cart'}" @click="currentView = 'cart'">
                     Cart <span class="cart-count">{{ cart.length }}</span>
                 </button>
             </div>

@@ -136,14 +136,13 @@
         <nav>
             <a href="#" class="logo" @click.prevent="currentView = 'lessons'">
                <img :src="getImageUrl('hubsy.png')" alt="Hubsy Logo" class="logo-img">
-               <span>Hubsy</span>
             </a>
 
             <div class="nav-links">
                 <button class="nav-btn" :class="{active: currentView === 'lessons'}" @click="currentView = 'lessons'">
                     Lessons
                 </button>
-                <button class="nav-btn cart-btn" :class="{active: currentView === 'cart'}" @click="currentView = 'cart'">
+                <button class="nav-btn cart-btn" :disabled=cart.length===0 :class="{active: currentView === 'cart'}" @click="currentView = 'cart'">
                     Cart <span class="cart-count">{{ cart.length }}</span>
                 </button>
             </div>
